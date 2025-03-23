@@ -1,0 +1,7 @@
+aiohttp
+beautifulsoup4
+soupsieve
+pyOpenSSL
+tld
+aiodns
+flask

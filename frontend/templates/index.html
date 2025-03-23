@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Responses</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom Styles -->
+    <style>
+        /* [El mismo estilo que tenías antes] */
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 2rem;
+        }
+        h1 {
+            color: #343a40;
+        }
+        .response-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .response-item {
+            background-color: #ffffff; /* Fondo blanco para el recuadro */
+            border: 1px solid #e9ecef; /* Borde suave */
+            border-radius: 5px; /* Bordes redondeados */
+            padding: 1rem; /* Relleno interior */
+            margin-bottom: 1rem; /* Separación entre recuadros */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Sombra ligera */
+        }
+        .ip-address {
+            font-weight: bold;
+            color: #007bff;
+            margin-bottom: 0.5rem; /* Espacio entre IP y datos */
+        }
+        .response-data {
+            line-height: 1.2; /* Reducir el espacio entre líneas */
+        }
+        .response-entry {
+            display: flex;
+            align-items: flex-start; /* Alinear correctamente claves y valores */
+            margin-bottom: 0.25rem; /* Espaciado mínimo entre entradas */
+        }
+        .response-key {
+            font-weight: bold;
+            color: #6c757d;
+            width: 150px; /* Ancho fijo para las claves */
+            flex-shrink: 0; /* Evitar que la clave se contraiga */
+            margin-right: 0.5rem; /* Espacio entre clave y valor */
+            white-space: nowrap; /* Clave siempre en una sola línea */
+        }
+        .response-value {
+            word-break: break-word; /* Romper palabras largas si es necesario */
+            max-width: calc(100% - 155px); /* Ajustar el ancho del valor */
+            margin: 0; /* Eliminar márgenes adicionales */
+        }
+        /* Mostrar algunos campos en una sola línea */
+        .single-line {
+            white-space: nowrap; /* Evitar saltos de línea */
+            overflow: hidden; /* Ocultar contenido que no quepa */
+            text-overflow: ellipsis; /* Agregar puntos suspensivos si el texto es largo */
+        }
+        /* Línea divisoria fina */
+        .divider {
+            border-bottom: 1px solid #e9ecef; /* Línea divisoria fina */
+            margin: 0.5rem 0; /* Espaciado arriba y abajo */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Web Responses</h1>
+
+        <!-- Search Bar -->
+        <form id="searchForm" class="mb-3">
+            <div class="input-group">
+                <input type="text" class="form-control" id="searchInput" placeholder="Search IPs or data...">
+                <button class="btn btn-primary" type="submit">Search</button>
+                <button class="btn btn-secondary" id="allButton" type="button">All</button> <!-- Botón All -->
+            </div>
+        </form>
+
+        <!-- Response List -->
+        <ul class="response-list" id="responseList">
+            {% for response in responses %}
+            <li class="response-item">
+                <span class="ip-address">{{ response.ip }}</span>
+                <div class="divider"></div> <!-- Línea divisoria después de la IP -->
+                <div class="response-data">
+                    {% if response.entry is mapping %}
+                        {% for key, value in response.entry.items() %}
+                            <div class="response-entry">
+                                <span class="response-key">{{ key }}:</span>
+                                <span class="response-value {% if key in ['port', 'status_code'] %}single-line{% endif %}">
+                                    {{ value }}
+                                </span>
+                            </div>
+                            <div class="divider"></div> <!-- Línea divisoria después de cada campo -->
+                        {% endfor %}
+                    {% else %}
+                        {{ response.entry }}
+                    {% endif %}
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Bootstrap JS (optional) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Función para cargar resultados
+        function loadResponses(url) {
+            const responseList = document.getElementById('responseList');
+            responseList.innerHTML = ''; // Limpiar la lista actual
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.length === 0) {
+                        responseList.innerHTML = '<li class="response-item">No results found.</li>';
+                        return;
+                    }
+
+                    data.forEach(response => {
+                        const listItem = document.createElement('li');
+                        listItem.className = 'response-item';
+
+                        // Mostrar IP
+                        const ipElement = document.createElement('span');
+                        ipElement.className = 'ip-address';
+                        ipElement.textContent = response.ip;
+                        listItem.appendChild(ipElement);
+
+                        // Añadir línea divisoria
+                        const divider1 = document.createElement('div');
+                        divider1.className = 'divider';
+                        listItem.appendChild(divider1);
+
+                        // Mostrar datos
+                        const dataDiv = document.createElement('div');
+                        dataDiv.className = 'response-data';
+
+                        for (const [key, value] of Object.entries(response.entry)) {
+                            const entryDiv = document.createElement('div');
+                            entryDiv.className = 'response-entry';
+
+                            const keyElement = document.createElement('span');
+                            keyElement.className = 'response-key';
+                            keyElement.textContent = `${key}:`;
+
+                            const valueElement = document.createElement('span');
+                            valueElement.className = `response-value ${['port', 'status_code'].includes(key) ? 'single-line' : ''}`;
+                            valueElement.textContent = value;
+
+                            entryDiv.appendChild(keyElement);
+                            entryDiv.appendChild(valueElement);
+                            dataDiv.appendChild(entryDiv);
+
+                            // Añadir línea divisoria
+                            const divider2 = document.createElement('div');
+                            divider2.className = 'divider';
+                            dataDiv.appendChild(divider2);
+                        }
+
+                        listItem.appendChild(dataDiv);
+                        responseList.appendChild(listItem);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching results:', error);
+                    alert('An error occurred while loading data.');
+                });
+        }
+
+        // Evento para el botón "Search"
+        document.getElementById('searchForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Evitar el envío del formulario
+            const query = document.getElementById('searchInput').value.trim();
+            if (!query) return;
+
+            loadResponses(`/search?q=${encodeURIComponent(query)}`);
+        });
+
+        // Evento para el botón "All"
+        document.getElementById('allButton').addEventListener('click', function() {
+            // Limpiar el campo de búsqueda
+            document.getElementById('searchInput').value = ''; // Restablecer el valor del input
+            loadResponses('/all'); // Cargar todos los resultados
+        });
+    </script>
+</body>
+</html>
