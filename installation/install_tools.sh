@@ -17,10 +17,18 @@ while IFS= read -r tool; do
       }
       ;;
     "smap")
-      go install github.com/s0md3v/smap@latest
+      git clone https://github.com/s0md3v/smap.git
+      cd smap
+      go build ./cmd/smap
+      sudo mv smap /usr/local/bin/
+      cd ..
       ;;
     "assetfinder")
-      go install github.com/tomnomnom/assetfinder@latest
+      git clone https://github.com/tomnomnom/assetfinder.git
+      cd assetfinder
+      go build
+      sudo mv assetfinder /usr/local/bin/
+      cd ..
       ;;
     "certgraph")
       git clone https://github.com/lanrat/certgraph.git
@@ -30,7 +38,11 @@ while IFS= read -r tool; do
       cd ..
       ;;
     "subfinder")
-      go install github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
+      git clone https://github.com/projectdiscovery/subfinder.git
+      cd subfinder/v2/cmd/subfinder
+      go build
+      sudo mv subfinder /usr/local/bin/
+      cd ../../..
       ;;
     *)
       echo "Herramienta desconocida: $tool"
