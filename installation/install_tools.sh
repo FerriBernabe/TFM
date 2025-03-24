@@ -26,6 +26,7 @@ while IFS= read -r tool; do
     "assetfinder")
       git clone https://github.com/tomnomnom/assetfinder.git
       cd assetfinder
+      go mod init github.com/tomnomnom/assetfinder
       go build
       sudo mv assetfinder /usr/local/bin/
       cd ..
@@ -40,6 +41,7 @@ while IFS= read -r tool; do
     "subfinder")
       git clone https://github.com/projectdiscovery/subfinder.git
       cd subfinder/v2/cmd/subfinder
+      go mod init github.com/projectdiscovery/subfinder/v2/cmd/subfinder
       go build
       sudo mv subfinder /usr/local/bin/
       cd ../../..
