@@ -4,13 +4,31 @@
 sudo apt update
 sudo apt install -y git
 
+# Detectar la arquitectura
+ARCH=$(uname -m)
+case $ARCH in
+  x86_64)
+    GO_URL="https://go.dev/dl/go1.22.1.linux-amd64.tar.gz"
+    ;;
+  aarch64)
+    GO_URL="https://go.dev/dl/go1.22.1.linux-arm64.tar.gz"
+    ;;
+  armv7l)
+    GO_URL="https://go.dev/dl/go1.22.1.linux-armv6l.tar.gz"
+    ;;
+  *)
+    echo "Arquitectura no soportada: $ARCH"
+    exit 1
+    ;;
+esac
+
 # Preguntar al usuario si quiere instalar la última versión de Go
 read -p "¿Quieres instalar la última versión de Go? (s/n): " respuesta
 if [ "$respuesta" = "s" ] || [ "$respuesta" = "S" ]; then
-    echo "Instalando Go 1.22.1..."
-    wget https://go.dev/dl/go1.22.1.linux-amd64.tar.gz
-    sudo tar -C /usr/local -xzf go1.22.1.linux-amd64.tar.gz
-    rm go1.22.1.linux-amd64.tar.gz
+    echo "Instalando Go 1.22.1 para $ARCH..."
+    wget "$GO_URL" -O go1.22.1.tar.gz
+    sudo tar -C /usr/local -xzf go1.22.1.tar.gz
+    rm go1.22.1.tar.gz
     export PATH=/usr/local/go/bin:$PATH
 else
     echo "Usando la versión de Go existente en el sistema..."
