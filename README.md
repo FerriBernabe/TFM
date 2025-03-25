@@ -23,7 +23,7 @@ Para instalar la herramienta hay que seguir los siguientes pasos:
 
 
 ## Ejecución del backend
-En primer lugar, cabe destacar que dependiendo de la interfaz de red que se quiera usar (para ejecutar Masscan) se deberá hacer un pequeño cambio en una variable del código. Como Masscan hace muchas peticiones por segundo debido al rate que se le da, se recomienda usar una VPN para ejecutar la herramienta. Por este motivo, por defecto, la herramienta usar la interfaz tun0 para esta clase. Si se desea usar otra interfaz, por ejemplo "enp0s3", se deberá hacer el cambio de la siguiente forma:
+En primer lugar, cabe destacar que dependiendo de la interfaz de red que se quiera usar (para ejecutar Masscan) se deberá hacer un pequeño cambio en una variable del código. Como Masscan hace muchas peticiones por segundo debido al rate que se le da, se recomienda usar una VPN para ejecutar la herramienta. Por este motivo, por defecto, la herramienta usar la interfaz "tun0" para esta clase. Si se desea usar otra interfaz, por ejemplo "enp0s3", se deberá hacer el cambio de la siguiente forma:
 
 ![image](https://github.com/user-attachments/assets/49cf699f-5a0a-4ce5-a15b-7c6f0e325167)
 
