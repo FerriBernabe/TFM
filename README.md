@@ -22,7 +22,7 @@ Para instalar la herramienta hay que seguir los siguientes pasos:
 ![image](https://github.com/user-attachments/assets/4bc6ba02-b39c-431c-b25b-a90524ee717b)
 
 
-## Ejecución
+## Ejecución del backend
 En primer lugar, cabe destacar que dependiendo de la interfaz de red que se quiera usar (para ejecutar Masscan) se deberá hacer un pequeño cambio en una variable del código. Como Masscan hace muchas peticiones por segundo debido al rate que se le da, se recomienda usar una VPN para ejecutar la herramienta. Por este motivo, por defecto, la herramienta usar la interfaz tun0 para esta clase. Si se desea usar otra interfaz, por ejemplo "enp0s3", se deberá hacer el cambio de la siguiente forma:
 
 ![image](https://github.com/user-attachments/assets/49cf699f-5a0a-4ce5-a15b-7c6f0e325167)
@@ -67,5 +67,34 @@ La ejecución de este modo se ve de la siguiente forma:
 
 ![image](https://github.com/user-attachments/assets/9b59561d-6a0d-4f3d-8244-5775dc473aca)
 
+Si este modo se ejecuta correctamente, se verá así:
 
+![image](https://github.com/user-attachments/assets/c8fe1e50-5bf1-4db8-a3bb-725818b13513)
+
+
+## Ejecución del frontend
+Para visualizar los datos recopilados se ha creado un frontend sencillo con Flask. Para ejecutarlo, deberemos movernos a la carpeta "frontend" y ejecutar el archivo:
+
+![image](https://github.com/user-attachments/assets/a0a683e5-9caa-40db-a657-34a768ab8ba5)
+
+![image](https://github.com/user-attachments/assets/d522f6e2-022a-44d1-8589-0888b4ed8180)
+
+![image](https://github.com/user-attachments/assets/4579dd05-2bc3-45b6-97db-365b20ca4d8e)
+
+Si accedemos a la interfaz web, podremos ver los resultados recopilados:
+
+![image](https://github.com/user-attachments/assets/42931cdd-55ae-436a-a375-ae0630052a39)
+
+La barra de búsqueda tiene un funcionamiento sencillo, se mosrarán las coincidencias a la cadena proporcionada en cualquier campo, ya sea title, request, response_text...
+Por ejemplo, si buscamos la palabra "api" encontramos coincidencias en distintos campos:
+
+![image](https://github.com/user-attachments/assets/27fcba40-f180-4908-a742-9b035c3d95c8)
+
+![image](https://github.com/user-attachments/assets/1658a347-9457-4a10-acd9-9254b4724e17)
+
+![image](https://github.com/user-attachments/assets/5bdd9f7c-f011-464a-bbcd-faa6be4a7e04)
+
+![image](https://github.com/user-attachments/assets/d80dea98-cfe0-41d0-8302-2169b3dfc763)
+
+Finalmente el botón "All" sirve para volver a mostrar todos los resultados tal y como sucede cuando se accede a la interfaz web por primera vez.
 
