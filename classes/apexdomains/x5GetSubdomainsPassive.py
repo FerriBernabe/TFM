@@ -59,7 +59,8 @@ class SubdomainsPassive:
     def exec_assetfinder(self, list_domains):
         #Comprobamos si el archivo self.subdomains_file existe. Si existe lo borramos
         if os.path.exists(self.subdomains_file):
-            os.remove(self.subdomains_file)
+            with open(self.subdomains_file, "w") as f:
+                f.write("")
         
         #Ahora para cada fld que hemos encontrado, ejecutamos assetfinder y guardamos los subdominios en self.subdomains_file
         for fld in list_domains:
